@@ -11,6 +11,11 @@ app.use(express.json())
 // form urlencoded postman
 app.use(express.urlencoded())
 
+app.use((req,res,next)=>{
+    console.log(`${req.method}:${req.url}`);
+    next();
+})
+
 
 const myList = [
     {
@@ -29,9 +34,15 @@ const myList = [
 
 
 ];
-app.get('/groceries', (req, res) => {
-    res.send(myList)
-});
+app.get('/groceries',
+    (req, res, next) => { 
+        console.log("before handling request");
+        next();
+    },
+    (req, res) => {
+        res.send(myList);
+        console.log("finished executing request");
+    });
 
 app.post('/groceries', (req, res) => {
 
@@ -41,9 +52,6 @@ app.post('/groceries', (req, res) => {
     //use postman
     res.send(201);
 })
-
-
-
 
 
 
